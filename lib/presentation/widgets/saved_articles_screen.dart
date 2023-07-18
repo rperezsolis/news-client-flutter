@@ -41,6 +41,8 @@ class _SavedArticlesScreenState extends State<SavedArticlesScreen> {
                   title: Text(
                     savedArticlesProvider.savedArticles[index].title,
                     style: Theme.of(context).textTheme.titleMedium,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   subtitle: Text(
                     savedArticlesProvider.savedArticles[index].description,

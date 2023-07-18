@@ -88,6 +88,8 @@ class _ArticleFeedScreenState extends State<ArticleFeedScreen> {
             title: Text(
               articleProvider.articles[index].title,
               style: Theme.of(context).textTheme.titleMedium,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
               articleProvider.articles[index].description,
