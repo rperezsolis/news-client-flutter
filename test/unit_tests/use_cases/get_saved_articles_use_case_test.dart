@@ -18,8 +18,8 @@ void main() {
     test('GetSavedArticlesUseCase returns a list of articles', () async {
       final GetSavedArticlesUseCase getSavedArticlesUseCase = GetSavedArticlesUseCase(articleRepository: mockArticleRepository);
       const List<SavedArticle> savedArticles = [
-        SavedArticle(id: 1, title: 'title 1', description: 'description 1', content: 'content 1', url: 'url 1'),
-        SavedArticle(id: 2, title: 'title 2', description: 'description 2', content: 'content 2', url: 'url 2')
+        SavedArticle(id: 1, title: 'title 1', description: 'description 1', content: 'content 1', url: 'url 1', urlToImage: 'urlToImage'),
+        SavedArticle(id: 2, title: 'title 2', description: 'description 2', content: 'content 2', url: 'url 2', urlToImage: 'urlToImage')
       ];
       when(() => mockArticleRepository.getSavedArticles()).thenAnswer((_) async => savedArticles);
       List<Article> actualResult = await getSavedArticlesUseCase.invoke();

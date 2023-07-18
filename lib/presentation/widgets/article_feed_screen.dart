@@ -85,8 +85,27 @@ class _ArticleFeedScreenState extends State<ArticleFeedScreen> {
       default: return ListView.separated(
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(articleProvider.articles[index].title),
-            subtitle: Text(articleProvider.articles[index].description),
+            title: Text(
+              articleProvider.articles[index].title,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            subtitle: Text(
+              articleProvider.articles[index].description,
+              style: Theme.of(context).textTheme.bodySmall,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+            leading: articleProvider.articles[index].urlToImage != null
+                ? AspectRatio(
+                    aspectRatio: 1/1,
+                    child: Image.network(
+                      articleProvider.articles[index].urlToImage!,
+                      height: 64,
+                      width: 64,
+                      fit: BoxFit.fitHeight,
+                    ),
+                  )
+                : null,
             onTap: () {
               articleDetailProvider.setCurrentArticle(article: articleProvider.articles[index]);
               Navigator.of(context).push(MaterialPageRoute<void>(

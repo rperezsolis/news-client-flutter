@@ -14,6 +14,7 @@ class SavedArticles extends Table {
   TextColumn get description => text()();
   TextColumn get content => text()();
   TextColumn get url => text()();
+  TextColumn get urlToImage => text().nullable()();
   TextColumn get author => text().nullable()();
   TextColumn get source => text().nullable()();
 }
@@ -34,5 +35,21 @@ class Database extends _$Database {
   static final Database instance = Database._create();
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (Migrator m) async {
+        await m.createAll();
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from < 2) {
+          // we added the dueDate property in the change from version 1 to
+          // version 2
+          await m.addColumn(savedArticles, savedArticles.urlToImage);
+        }
+      },
+    );
+  }
 }

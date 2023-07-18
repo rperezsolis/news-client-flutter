@@ -17,8 +17,8 @@ void main() {
     test('getSavedArticles returns a list of saved articles', () async {
       final SavedArticleLocalDatasource savedArticleLocalDatasource = SavedArticleLocalDatasource(savedArticleDao: mockSavedArticleDAO);
       const List<SavedArticle> savedArticles = [
-        SavedArticle(id: 1, title: 'title 1', description: 'description 1', content: 'content 1', url: 'url 1'),
-        SavedArticle(id: 2, title: 'title 2', description: 'description 2', content: 'content 2', url: 'url 2')
+        SavedArticle(id: 1, title: 'title 1', description: 'description 1', content: 'content 1', url: 'url 1', urlToImage: 'urlToImage'),
+        SavedArticle(id: 2, title: 'title 2', description: 'description 2', content: 'content 2', url: 'url 2', urlToImage: 'urlToImage')
       ];
       when(() => mockSavedArticleDAO.getSavedArticles()).thenAnswer((_) async => savedArticles);
       List<SavedArticle> actualResult = await savedArticleLocalDatasource.getSavedArticles();
@@ -28,7 +28,7 @@ void main() {
     test('getSavedArticleByUrl returns a saved article', () async {
       final SavedArticleLocalDatasource savedArticleLocalDatasource = SavedArticleLocalDatasource(savedArticleDao: mockSavedArticleDAO);
       const String url = 'url';
-      const SavedArticle savedArticle = SavedArticle(id: 1, title: 'title 1', description: 'description 1', content: 'content 1', url: 'url 1');
+      const SavedArticle savedArticle = SavedArticle(id: 1, title: 'title 1', description: 'description 1', content: 'content 1', url: 'url 1', urlToImage: 'urlToImage');
       when(() => mockSavedArticleDAO.getSavedArticleByUrl(url: url)).thenAnswer((_) async => savedArticle);
       SavedArticle? actualResult = await savedArticleLocalDatasource.getSavedArticleByUrl(url: url);
       expect(actualResult, savedArticle);

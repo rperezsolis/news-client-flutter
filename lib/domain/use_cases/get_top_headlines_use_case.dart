@@ -20,6 +20,7 @@ class GetTopHeadlinesUseCase {
           url: element.url!,
           author: element.author,
           source: element.source?.name,
+          urlToImage: element.urlToImage
       )).toList(growable: false);
       return SuccessResult(data: articles);
     } else {

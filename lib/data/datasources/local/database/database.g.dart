@@ -40,6 +40,12 @@ class $SavedArticlesTable extends SavedArticles
   late final GeneratedColumn<String> url = GeneratedColumn<String>(
       'url', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _urlToImageMeta =
+      const VerificationMeta('urlToImage');
+  @override
+  late final GeneratedColumn<String> urlToImage = GeneratedColumn<String>(
+      'url_to_image', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _authorMeta = const VerificationMeta('author');
   @override
   late final GeneratedColumn<String> author = GeneratedColumn<String>(
@@ -52,7 +58,7 @@ class $SavedArticlesTable extends SavedArticles
       type: DriftSqlType.string, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, title, description, content, url, author, source];
+      [id, title, description, content, url, urlToImage, author, source];
   @override
   String get aliasedName => _alias ?? 'saved_articles';
   @override
@@ -91,6 +97,12 @@ class $SavedArticlesTable extends SavedArticles
     } else if (isInserting) {
       context.missing(_urlMeta);
     }
+    if (data.containsKey('url_to_image')) {
+      context.handle(
+          _urlToImageMeta,
+          urlToImage.isAcceptableOrUnknown(
+              data['url_to_image']!, _urlToImageMeta));
+    }
     if (data.containsKey('author')) {
       context.handle(_authorMeta,
           author.isAcceptableOrUnknown(data['author']!, _authorMeta));
@@ -118,6 +130,8 @@ class $SavedArticlesTable extends SavedArticles
           .read(DriftSqlType.string, data['${effectivePrefix}content'])!,
       url: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}url'])!,
+      urlToImage: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}url_to_image']),
       author: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}author']),
       source: attachedDatabase.typeMapping
@@ -137,6 +151,7 @@ class SavedArticle extends DataClass implements Insertable<SavedArticle> {
   final String description;
   final String content;
   final String url;
+  final String? urlToImage;
   final String? author;
   final String? source;
   const SavedArticle(
@@ -145,6 +160,7 @@ class SavedArticle extends DataClass implements Insertable<SavedArticle> {
       required this.description,
       required this.content,
       required this.url,
+      this.urlToImage,
       this.author,
       this.source});
   @override
@@ -155,6 +171,9 @@ class SavedArticle extends DataClass implements Insertable<SavedArticle> {
     map['description'] = Variable<String>(description);
     map['content'] = Variable<String>(content);
     map['url'] = Variable<String>(url);
+    if (!nullToAbsent || urlToImage != null) {
+      map['url_to_image'] = Variable<String>(urlToImage);
+    }
     if (!nullToAbsent || author != null) {
       map['author'] = Variable<String>(author);
     }
@@ -171,6 +190,9 @@ class SavedArticle extends DataClass implements Insertable<SavedArticle> {
       description: Value(description),
       content: Value(content),
       url: Value(url),
+      urlToImage: urlToImage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(urlToImage),
       author:
           author == null && nullToAbsent ? const Value.absent() : Value(author),
       source:
@@ -187,6 +209,7 @@ class SavedArticle extends DataClass implements Insertable<SavedArticle> {
       description: serializer.fromJson<String>(json['description']),
       content: serializer.fromJson<String>(json['content']),
       url: serializer.fromJson<String>(json['url']),
+      urlToImage: serializer.fromJson<String?>(json['urlToImage']),
       author: serializer.fromJson<String?>(json['author']),
       source: serializer.fromJson<String?>(json['source']),
     );
@@ -200,6 +223,7 @@ class SavedArticle extends DataClass implements Insertable<SavedArticle> {
       'description': serializer.toJson<String>(description),
       'content': serializer.toJson<String>(content),
       'url': serializer.toJson<String>(url),
+      'urlToImage': serializer.toJson<String?>(urlToImage),
       'author': serializer.toJson<String?>(author),
       'source': serializer.toJson<String?>(source),
     };
@@ -211,6 +235,7 @@ class SavedArticle extends DataClass implements Insertable<SavedArticle> {
           String? description,
           String? content,
           String? url,
+          Value<String?> urlToImage = const Value.absent(),
           Value<String?> author = const Value.absent(),
           Value<String?> source = const Value.absent()}) =>
       SavedArticle(
@@ -219,6 +244,7 @@ class SavedArticle extends DataClass implements Insertable<SavedArticle> {
         description: description ?? this.description,
         content: content ?? this.content,
         url: url ?? this.url,
+        urlToImage: urlToImage.present ? urlToImage.value : this.urlToImage,
         author: author.present ? author.value : this.author,
         source: source.present ? source.value : this.source,
       );
@@ -230,6 +256,7 @@ class SavedArticle extends DataClass implements Insertable<SavedArticle> {
           ..write('description: $description, ')
           ..write('content: $content, ')
           ..write('url: $url, ')
+          ..write('urlToImage: $urlToImage, ')
           ..write('author: $author, ')
           ..write('source: $source')
           ..write(')'))
@@ -237,8 +264,8 @@ class SavedArticle extends DataClass implements Insertable<SavedArticle> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, title, description, content, url, author, source);
+  int get hashCode => Object.hash(
+      id, title, description, content, url, urlToImage, author, source);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -248,6 +275,7 @@ class SavedArticle extends DataClass implements Insertable<SavedArticle> {
           other.description == this.description &&
           other.content == this.content &&
           other.url == this.url &&
+          other.urlToImage == this.urlToImage &&
           other.author == this.author &&
           other.source == this.source);
 }
@@ -258,6 +286,7 @@ class SavedArticlesCompanion extends UpdateCompanion<SavedArticle> {
   final Value<String> description;
   final Value<String> content;
   final Value<String> url;
+  final Value<String?> urlToImage;
   final Value<String?> author;
   final Value<String?> source;
   const SavedArticlesCompanion({
@@ -266,6 +295,7 @@ class SavedArticlesCompanion extends UpdateCompanion<SavedArticle> {
     this.description = const Value.absent(),
     this.content = const Value.absent(),
     this.url = const Value.absent(),
+    this.urlToImage = const Value.absent(),
     this.author = const Value.absent(),
     this.source = const Value.absent(),
   });
@@ -275,6 +305,7 @@ class SavedArticlesCompanion extends UpdateCompanion<SavedArticle> {
     required String description,
     required String content,
     required String url,
+    this.urlToImage = const Value.absent(),
     this.author = const Value.absent(),
     this.source = const Value.absent(),
   })  : title = Value(title),
@@ -287,6 +318,7 @@ class SavedArticlesCompanion extends UpdateCompanion<SavedArticle> {
     Expression<String>? description,
     Expression<String>? content,
     Expression<String>? url,
+    Expression<String>? urlToImage,
     Expression<String>? author,
     Expression<String>? source,
   }) {
@@ -296,6 +328,7 @@ class SavedArticlesCompanion extends UpdateCompanion<SavedArticle> {
       if (description != null) 'description': description,
       if (content != null) 'content': content,
       if (url != null) 'url': url,
+      if (urlToImage != null) 'url_to_image': urlToImage,
       if (author != null) 'author': author,
       if (source != null) 'source': source,
     });
@@ -307,6 +340,7 @@ class SavedArticlesCompanion extends UpdateCompanion<SavedArticle> {
       Value<String>? description,
       Value<String>? content,
       Value<String>? url,
+      Value<String?>? urlToImage,
       Value<String?>? author,
       Value<String?>? source}) {
     return SavedArticlesCompanion(
@@ -315,6 +349,7 @@ class SavedArticlesCompanion extends UpdateCompanion<SavedArticle> {
       description: description ?? this.description,
       content: content ?? this.content,
       url: url ?? this.url,
+      urlToImage: urlToImage ?? this.urlToImage,
       author: author ?? this.author,
       source: source ?? this.source,
     );
@@ -338,6 +373,9 @@ class SavedArticlesCompanion extends UpdateCompanion<SavedArticle> {
     if (url.present) {
       map['url'] = Variable<String>(url.value);
     }
+    if (urlToImage.present) {
+      map['url_to_image'] = Variable<String>(urlToImage.value);
+    }
     if (author.present) {
       map['author'] = Variable<String>(author.value);
     }
@@ -355,6 +393,7 @@ class SavedArticlesCompanion extends UpdateCompanion<SavedArticle> {
           ..write('description: $description, ')
           ..write('content: $content, ')
           ..write('url: $url, ')
+          ..write('urlToImage: $urlToImage, ')
           ..write('author: $author, ')
           ..write('source: $source')
           ..write(')'))

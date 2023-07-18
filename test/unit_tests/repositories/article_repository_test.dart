@@ -30,8 +30,8 @@ void main() {
           status: "status",
           totalResults: 2,
           articles: [
-            data_article.Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1'),
-            data_article.Article(title: 'Article 2', description: 'Description 2', content: 'Content 2', url: 'Url 2')
+            data_article.Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1', urlToImage: 'urlToImage'),
+            data_article.Article(title: 'Article 2', description: 'Description 2', content: 'Content 2', url: 'Url 2', urlToImage: 'urlToImage')
           ])
       );
       when(() => mockArticleRemoteDatasource.getTopHeadlines(countryCode: countryCode))
@@ -65,7 +65,7 @@ void main() {
     test('saveArticle returns the id of the saved article', () async {
       final ArticleRepository articleRepository = ArticleRepository(remoteDatasource: mockArticleRemoteDatasource,
           savedArticleLocalDatasource: mockSavedArticleLocalDatasource);
-      const Article article = Article(title: 'title', description: 'description', content: 'content', url: 'url');
+      const Article article = Article(title: 'title', description: 'description', content: 'content', url: 'url', urlToImage: 'urlToImage');
       const savedArticleId = 1;
       when(() => mockSavedArticleLocalDatasource.saveArticle(title: article.title,
           description: article.description, content: article.content, url: article.url))

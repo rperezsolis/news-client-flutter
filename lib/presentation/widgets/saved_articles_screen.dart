@@ -38,8 +38,27 @@ class _SavedArticlesScreenState extends State<SavedArticlesScreen> {
             return ListView.separated(
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  title: Text(savedArticlesProvider.savedArticles[index].title),
-                  subtitle: Text(savedArticlesProvider.savedArticles[index].description),
+                  title: Text(
+                    savedArticlesProvider.savedArticles[index].title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  subtitle: Text(
+                    savedArticlesProvider.savedArticles[index].description,
+                    style: Theme.of(context).textTheme.bodySmall,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  leading: savedArticlesProvider.savedArticles[index].urlToImage != null
+                      ? AspectRatio(
+                          aspectRatio: 1/1,
+                          child: Image.network(
+                            savedArticlesProvider.savedArticles[index].urlToImage!,
+                            height: 64,
+                            width: 64,
+                            fit: BoxFit.fitHeight,
+                          )
+                        )
+                      : null,
                   onTap: () {
                     articleDetailProvider.setCurrentArticle(article: savedArticlesProvider.savedArticles[index]);
                     Navigator.of(context).push(MaterialPageRoute<void>(

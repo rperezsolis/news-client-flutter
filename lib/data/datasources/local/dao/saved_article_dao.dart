@@ -16,7 +16,8 @@ class SavedArticleDAO {
   }
 
   Future<int> insertSavedArticle({required String title, required String description,
-    required String content, required String url, String? author, String? source}) async {
+    required String content, required String url, String? author, String? source,
+    String? urlToImage}) async {
     return await _database.into(_database.savedArticles).insert(
         SavedArticlesCompanion(
             title: Value(title),
@@ -24,7 +25,8 @@ class SavedArticleDAO {
             content: Value(content),
             url: Value(url),
             author: Value(author),
-            source: Value(source)
+            source: Value(source),
+            urlToImage: Value(urlToImage)
         ),
         mode: InsertMode.replace
     );

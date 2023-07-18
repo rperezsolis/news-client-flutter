@@ -27,9 +27,10 @@ class ArticleRepository {
   }
 
   Future<int> saveArticle({required String title, required String description,
-    required String content, required String url, String? author, String? source}) async {
+    required String content, required String url, String? author, String? source,
+    String? urlToImage}) async {
     return await _savedArticleLocalDatasource.saveArticle(title: title, description: description,
-        content: content, url: url, author: author, source: source);
+        content: content, url: url, author: author, source: source, urlToImage: urlToImage);
   }
 
   Future<int> unSaveArticle({required String url}) async {

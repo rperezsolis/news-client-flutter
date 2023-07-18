@@ -8,6 +8,7 @@ class SaveArticleUseCase {
 
   Future<int> invoke({required Article article}) async {
     return await _articleRepository.saveArticle(title: article.title, description: article.description,
-        content: article.content, url: article.url, author: article.author, source: article.source);
+        content: article.content, url: article.url, author: article.author, source: article.source,
+        urlToImage: article.urlToImage);
   }
 }

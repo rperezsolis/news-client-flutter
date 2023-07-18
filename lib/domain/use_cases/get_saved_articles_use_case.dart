@@ -16,6 +16,7 @@ class GetSavedArticlesUseCase {
         url: element.url,
         author: element.author,
         source: element.source,
+        urlToImage: element.urlToImage
     )).toList();
   }
 }

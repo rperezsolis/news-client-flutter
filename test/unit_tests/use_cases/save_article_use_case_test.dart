@@ -16,10 +16,10 @@ void main() {
 
     test('SaveArticleUseCase returns the the saved article id', () async {
       final SaveArticleUseCase saveArticleUseCase = SaveArticleUseCase(articleRepository: mockArticleRepository);
-      const Article article = Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1');
+      const Article article = Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1', urlToImage: 'urlToImage');
       const int savedArticleId = 7;
       when(() => mockArticleRepository.saveArticle(title: article.title, description: article.description,
-          content: article.content, url: article.url)).thenAnswer((_) async => savedArticleId);
+          content: article.content, url: article.url, urlToImage: article.urlToImage)).thenAnswer((_) async => savedArticleId);
       int actualResult = await saveArticleUseCase.invoke(article: article);
       expect(actualResult, savedArticleId);
     });

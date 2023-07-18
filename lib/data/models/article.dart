@@ -7,6 +7,7 @@ class Article {
   final Source? source;
   final String? author;
   final String? url;
+  final String? urlToImage;
 
   const Article({
     required this.title,
@@ -15,6 +16,7 @@ class Article {
     this.author,
     this.source,
     this.url,
+    this.urlToImage
   });
 
   factory Article.fromJson(Map<String, dynamic> json) => Article(
@@ -24,6 +26,7 @@ class Article {
     source: Source.fromJson(json["source"]),
     author: json["author"],
     url: json["url"],
+    urlToImage: json["urlToImage"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -33,5 +36,6 @@ class Article {
     "source": source?.toJson(),
     "author": author,
     "url": url,
+    "urlToImage": urlToImage
   };
 }

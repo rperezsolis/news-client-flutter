@@ -17,7 +17,7 @@ void main() {
 
     test('IsArticleSavedUseCase returns true', () async {
       final IsArticleSavedUseCase isArticleSavedUseCase = IsArticleSavedUseCase(articleRepository: mockArticleRepository);
-      const Article article = Article(title: 'Title', description: 'description', content: 'content', url: 'url');
+      const Article article = Article(title: 'Title', description: 'description', content: 'content', url: 'url', urlToImage: 'urlToImage');
       when(() => mockArticleRepository.getSavedArticleByUrl(url: article.url))
           .thenAnswer((invocation) async => const SavedArticle(
           id: 1,
@@ -32,7 +32,7 @@ void main() {
 
     test('IsArticleSavedUseCase returns false', () async {
       final IsArticleSavedUseCase isArticleSavedUseCase = IsArticleSavedUseCase(articleRepository: mockArticleRepository);
-      const Article article = Article(title: 'Title', description: 'description', content: 'content', url: 'url');
+      const Article article = Article(title: 'Title', description: 'description', content: 'content', url: 'url', urlToImage: 'urlToImage');
       when(() => mockArticleRepository.getSavedArticleByUrl(url: article.url))
           .thenAnswer((invocation) async => null);
       bool actualResult = await isArticleSavedUseCase.invoke(article: article);

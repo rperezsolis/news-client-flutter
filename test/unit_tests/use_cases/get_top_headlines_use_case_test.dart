@@ -26,13 +26,13 @@ void main() {
           status: "status",
           totalResults: 2,
           articles: [
-            data_article.Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1'),
-            data_article.Article(title: 'Article 2', description: 'Description 2', content: 'Content 2', url: 'Url 2')
+            data_article.Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1', urlToImage: 'urlToImage'),
+            data_article.Article(title: 'Article 2', description: 'Description 2', content: 'Content 2', url: 'Url 2', urlToImage: 'urlToImage')
           ])
       );
       SuccessResult<List<Article>> expectedResult = const SuccessResult<List<Article>>(data: [
-        Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1'),
-        Article(title: 'Article 2', description: 'Description 2', content: 'Content 2', url: 'Url 2')
+        Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1', urlToImage: 'urlToImage'),
+        Article(title: 'Article 2', description: 'Description 2', content: 'Content 2', url: 'Url 2', urlToImage: 'urlToImage')
       ]);
       when(() => mockArticleRepository.getTopHeadlines(countryCode: countryCode))
           .thenAnswer((_) async => articleResponseResult);
@@ -49,14 +49,14 @@ void main() {
           status: "status",
           totalResults: 2,
           articles: [
-            data_article.Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1'),
-            data_article.Article(title: 'Article 2', description: null, content: 'Content 2', url: 'Url 2'),
-            data_article.Article(title: 'Article 3', description: 'Description 3', content: null, url: 'Url 3'),
-            data_article.Article(title: 'Article 4', description: 'Description 4', content: 'Content 4', url: null)
+            data_article.Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1', urlToImage: 'urlToImage'),
+            data_article.Article(title: 'Article 2', description: null, content: 'Content 2', url: 'Url 2', urlToImage: 'urlToImage'),
+            data_article.Article(title: 'Article 3', description: 'Description 3', content: null, url: 'Url 3', urlToImage: 'urlToImage'),
+            data_article.Article(title: 'Article 4', description: 'Description 4', content: 'Content 4', url: null, urlToImage: null)
           ])
       );
       SuccessResult<List<Article>> expectedResult = const SuccessResult<List<Article>>(data: [
-        Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1')
+        Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1', urlToImage: 'urlToImage')
       ]);
       when(() => mockArticleRepository.getTopHeadlines(countryCode: countryCode))
           .thenAnswer((_) async => articleResponseResult);

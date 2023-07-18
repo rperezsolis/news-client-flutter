@@ -25,8 +25,8 @@ void main() {
           status: "status",
           totalResults: 2,
           articles: [
-            data_article.Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1'),
-            data_article.Article(title: 'Article 2', description: 'Description 2', content: 'Content 2', url: 'Url 2')
+            data_article.Article(title: 'Article 1', description: 'Description 1', content: 'Content 1', url: 'Url 1', urlToImage: 'urlToImage'),
+            data_article.Article(title: 'Article 2', description: 'Description 2', content: 'Content 2', url: 'Url 2', urlToImage: 'urlToImage')
           ])
       );
       when(() => mockArticlesNetworkApi.getTopHeadlines(countryCode: countryCode))
